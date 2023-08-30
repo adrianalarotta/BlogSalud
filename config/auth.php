@@ -89,15 +89,15 @@ return [
     | quickly generating a very large amount of password reset tokens.
     |
     */
-
+    
     'passwords' => [
         'users' => [
-            'provider' => 'users',
-            'table' => 'password_reset_tokens',
-            'expire' => 60,
-            'throttle' => 60,
+            'provider' => 'users', // El nombre del proveedor de usuarios definido en 'providers'
+            'table' => 'users', // La tabla en la base de datos para almacenar los tokens de reinicio
+            'expire' => 60, // Tiempo de expiración en minutos para los tokens de reinicio
         ],
     ],
+    
 
     /*
     |--------------------------------------------------------------------------
