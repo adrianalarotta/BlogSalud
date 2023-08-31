@@ -21,37 +21,19 @@
                             {{ session('success_message') }}
                         </div>
                     @endif
-                    
+
                     @if(session('error_message'))
-                        <div class="alert alert-danger">
-                            {{ session('error_message') }}
-                        </div>
-                    @endif
+    <div class="alert alert-danger">
+        {{ session('error_message') }}
+    </div>
+@endif
+
                     
                         <form id="registration-form"  method="POST" action="{{ route('solicitudes.register') }}"> 
                             @csrf
 
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="tipo_documento">{{ __('Tipo de Documento') }}</label>
-                                        <select id="tipo_documento" name="tipo_documento" class="form-control">
-                                            <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
-                                            <option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
-                                            <option value="Pasaporte">Pasaporte</option>
-                                            <option value="Cédula de Extranjería">Cédula de Extranjería</option>
-                                            <option value="NIT">NIT</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="numero_documento">{{ __('Número de Documento') }}</label>
-                                        <input id="numero_documento" type="text" class="form-control" name="numero_documento" required>
-                                    </div>
-                                </div>
-
+                                
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="nombres">{{ __('Nombres') }}</label>
@@ -68,15 +50,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="estado">{{ __('Estado') }}</label>
-                                        <select id="estado" name="estado" class="form-control">
-                                            <option value="1">{{ __('Activo') }}</option>
-                                            <option value="0">{{ __('Inactivo') }}</option>
-                                        </select>
-                                    </div>
-                                </div>
+                              
 
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -86,15 +60,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="observacion">{{ __('Observación') }}</label>
-                                <textarea id="observacion" class="form-control" name="observacion"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="direccion">{{ __('Dirección') }}</label>
-                                <input id="direccion" type="text" class="form-control" name="direccion">
-                            </div>
+                        
 
                             <div class="form-group">
                                 <label for="telefonos">{{ __('Teléfonos') }}</label>
@@ -116,15 +82,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="genero">{{ __('Género') }}</label>
-                                        <select id="genero" name="genero" class="form-control">
-                                            <option value="Femenino">{{ __('Femenino') }}</option>
-                                            <option value="Masculino">{{ __('Masculino') }}</option>
-                                        </select>
-                                    </div>
-                                </div>
+                               
                             </div>
 
                         </div>
@@ -133,6 +91,7 @@
                             <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#errorModal">{{ __('Guardar Usuario') }}</button>
 
                         </div>
+                        
                     </form>
                 </div>
             </div>

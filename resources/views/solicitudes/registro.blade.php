@@ -54,42 +54,19 @@
                     <table class="table table-general" aria-describedby="tableDescCursorRows">
                         <thead class="encabezado-tabla">
                             <tr>
-                                <th>Nombre</th>
-                                <th>Apellidos</th>
-                                <th>Tipo de Documento</th>
-                                <th>Número de Documento</th>
-                                <th>Estado</th>
-                                <th>Email</th>
-                                <th>Género</th>
-                                <th>Fecha de Nacimiento</th>
-                                <th>Observación</th>
-                                <th>Dirección</th>
-                                <th>Teléfonos</th>
-                                <th>Editar Eliminar</th>
+                                <th>title</th>
+                                <th>description</th>
+                                <th>fecha</th>
                             </tr>
                         </thead>
                         <tbody class="contenido-tablas contenido-hover">
                             @if (!empty($registros))
                             @foreach ($registros as $registro)
                             <tr>
-                                <td>{{ $registro->nombres }}</td>
-                                <td>{{ $registro->apellidos }}</td>
-                                <td>{{ $registro->tipo_documento }}</td>
-                                <td>{{ $registro->numero_documento }}</td>
-                                <td>{{ $registro->estado }}</td>
-                                <td>{{ $registro->email }}</td>
-                                <td>{{ $registro->genero }}</td>
-                                <td>{{ $registro->fecha_nacimiento }}</td>
-                                <td>{{ $registro->observacion }}</td>
-                                <td>{{ $registro->direccion }}</td>
-                                <td>{{ $registro->telefonos }}</td>
-                                <td>
-                                    <!-- Íconos para editar y eliminar -->
-                                    <a href="{{ route('editar_registro', ['id' => $registro->id]) }}" class="btn btn-primary btn-sm mr-1"><i class="bi bi-pencil"></i></a>
-
-                                    <a href="{{ route('eliminar_registro', ['id' => $registro->id]) }}" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
-
-                                </td>
+                                <td>{{ $registro->title }}</td>
+                                <td>{{ $registro->description }}</td>
+                                <td>{{ $registro->created_at }}</td>
+                                
                             </tr>
                             @endforeach
                             @endif
@@ -99,7 +76,7 @@
             
                 <!-- Opción para crear un nuevo usuario -->
                 <div class="mt-3">
-                    <a href="/solicitudes/nuevousuario" class="btn btn-success">Crear Nuevo Usuario</a>
+                    <a href="/solicitudes/create" class="btn btn-success">Crear Nuevo post</a>
                 </div>
             </div>
             

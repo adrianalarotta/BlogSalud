@@ -5,20 +5,75 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Post;
 use Illuminate\Database\QueryException;
 use SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Password;
+use Carbon\Carbon;
+
 
 
 class SolicitudController extends Controller
 {
+    public function inicio()
+    {
+        return view('solicitudes.inicio');
+    }
 
+    public function index()
+    
+    {
+        $posts = DB::table('posts')
+        ->select(
+            'posts.description',
+            'posts.title',
+            'posts.created_at')->get();
+            
+        return view('solicitudes.inicio', ['posts' => $posts]);
+    }
     
     // Mostrar formulario de inicio de sesión
     public function showLogin()
     {
         return view('solicitudes.login');
     }
+
+
+    public function createPost(Request $request)
+    {
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+
+        // Crear un nuevo post para el usuario actual
+        $post = new Post();
+        $post->title = $request->input('title');
+        $post->description = $request->input('description');
+        $user->posts()->save($post);
+
+        return redirect()->route('solicitudes.showCreateForm'); // Redirigir a la página de creación
+    }
+
+    public function showCreateForm()
+    {
+        return view('solicitudes.nuevopost'); // Mostrar el formulario de creación de posts
+    }
+
+
+    public function registro()
+{
+    $user = Auth::user();
+
+    $registros = $user->posts()
+        ->select(
+            'posts.title',
+            'posts.description',
+            'posts.created_at'
+        )
+        ->get();
+
+    return view('solicitudes.registro', ['registros' => $registros]);
+}
+
 
     // Procesar inicio de sesión
     public function logincheck (Request $request)
@@ -51,32 +106,27 @@ class SolicitudController extends Controller
     {
         // Validar los datos
         $validatedData = $request->validate([
-            'tipo_documento' => 'required',
-            'numero_documento' => 'required|unique:users',
-            'nombres' => 'required',
-            'apellidos' => 'required',
-            'estado' => 'required|in:0,1',
-            'password' => 'required|min:8',
-            'email' => 'required|email|unique:users',
-            'genero' => 'required|in:Femenino,Masculino',
             
+            'nombres' => 'required',
+            'email' => 'required|email',
         ]);
 
         // Crear un nuevo usuario
         $user = new User();
-        $user->tipo_documento = $request->input('tipo_documento');
-        $user->numero_documento = $request->input('numero_documento');
         $user->nombres = $request->input('nombres');
         $user->apellidos = $request->input('apellidos');
-        $user->estado = $request->input('estado');
         $user->password = bcrypt($request->input('password'));
-        $user->observacion = $request->input('observacion');
-        $user->direccion = $request->input('direccion');
-        $user->telefonos = $request->input('telefonos');
+       $user->telefonos = $request->input('telefonos');
         $user->fecha_nacimiento = $request->input('fecha_nacimiento');
         $user->email = $request->input('email');
-        $user->genero = $request->input('genero');
 
+        $fechaNacimiento = Carbon::parse($request->input('fecha_nacimiento'));
+    $edad = $fechaNacimiento->diffInYears(Carbon::now());
+
+    if ($edad < 18) {
+        return back()->with('error_message', 'Debes ser mayor de 18 años para registrarte.');
+    }
+        
         try {
             $user->save();
         
@@ -89,29 +139,23 @@ class SolicitudController extends Controller
         
     }
 
+   
     public function showEditForm($id)
     {
         
-        $user = User::find($id); // Suponiendo que tu modelo se llama 'Registro'
+        $user = User::find($id); 
         return view('solicitudes.editar', ['user' => $user]);
     }
 
     public function update(Request $request, $id)
 {
     $user = User::find($id);
-    // Validar y actualizar los datos, similar a como lo haces en el método 'register'
-    $user->tipo_documento = $request->input('tipo_documento');
-        $user->numero_documento = $request->input('numero_documento');
-        $user->nombres = $request->input('nombres');
+    $user->nombres = $request->input('nombres');
         $user->apellidos = $request->input('apellidos');
-        $user->estado = $request->input('estado');
         $user->password = bcrypt($request->input('password'));
-        $user->observacion = $request->input('observacion');
-        $user->direccion = $request->input('direccion');
         $user->telefonos = $request->input('telefonos');
         $user->fecha_nacimiento = $request->input('fecha_nacimiento');
         $user->email = $request->input('email');
-        $user->genero = $request->input('genero');
     $user->save();
 
     return redirect()->route('solicitudes.registro')->with('success', 'Registro actualizado exitosamente.');
@@ -120,7 +164,7 @@ class SolicitudController extends Controller
 
 public function eliminarRegistro($id)
 {
-    $user = User::find($id); // Suponiendo que tu modelo se llama 'Registro'
+    $user = User::find($id);
     if ($user) {
         $user->delete();
         return redirect()->route('solicitudes.registro')->with('success', 'Registro eliminado exitosamente.');
@@ -163,29 +207,7 @@ protected function broker()
 
 
     
-    public function registro()
-    {
-        $registros = DB::table('users')
-            ->select(
-                'users.id',
-                'users.tipo_documento',
-                'users.numero_documento',
-                'users.nombres',
-                'users.apellidos',
-                'users.estado',
-                'users.password',
-                'users.observacion',
-                'users.direccion',
-                'users.telefonos',
-                'users.fecha_nacimiento',
-                'users.email',
-                'users.genero',
-                'users.created_at',
-                'users.updated_at'
-            )->get();
     
-        return view('solicitudes.registro', ['registros' => $registros]);
-    }
     
     
 }

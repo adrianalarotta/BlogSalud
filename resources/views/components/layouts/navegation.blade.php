@@ -45,18 +45,15 @@
   <div class="collapse navbar-collapse" id="navbarNav" style="padding-right: 8%">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Inicio <span class="sr-only">(actual)</span></a>
+        <a class="nav-link" href="/">Inicio <span class="sr-only">(actual)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Acerca de</a>
+        <a class="nav-link" href="/solicitudes/login">Ingresar</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Servicios</a>
+        <a class="nav-link" href="/solicitudes/nuevousuario">Registro</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Contacto</a>
       
-      </li>
     </ul>
   </div>
 </nav>
