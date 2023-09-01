@@ -67,9 +67,23 @@
         .form-control {
             margin-bottom: 15px;
         }
+
+        .corner-button {
+    position: fixed;
+    top: 20px; 
+    left: 20px; 
+    z-index: 1000; 
+}
+
     </style>
 </head>
 <body>
+    <div class="corner-button">
+        <a href="/" class="btn btn-primary">Inicio</a>
+    </div>
+    
+    
+
     <div class="card">
     <div class="card-header">{{ __('Bienvenido') }}</div>
     <div class="card-body">

@@ -12,8 +12,13 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
+                    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
                     <div class="card">
-                        <div class="card-header">{{ __('Crear Entrada') }}</div>
+                        <div class="card-header">{{ __('Crear Post') }}</div>
                         <div class="card-body">
 
                             <form id="entry-form" method="POST" action="{{ route('solicitudes.createPost') }}">
@@ -30,7 +35,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">{{ __('Guardar Entrada') }}</button>
+                                    <button type="submit" class="btn btn-primary">{{ __('Guardar Post') }}</button>
                                 </div>
                             </form>
                         </div>

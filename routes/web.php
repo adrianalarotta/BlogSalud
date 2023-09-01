@@ -30,7 +30,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Ruta para mostrar el formulario de creación de posts
     Route::get('/solicitudes/create', [SolicitudController::class, 'showCreateForm'])->name('solicitudes.showCreateForm');
+    Route::get('/importar-publicaciones', [SolicitudController::class, 'importarPublicaciones'])->name('solicitudes.importarPublicaciones');
 });
+
+
 
 
 Route::post('/solicitudes/register', [SolicitudController::class, 'register'])->name('solicitudes.register');

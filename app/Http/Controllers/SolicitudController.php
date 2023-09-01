@@ -10,6 +10,7 @@ use Illuminate\Database\QueryException;
 use SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Password;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 
 
 
@@ -49,7 +50,7 @@ class SolicitudController extends Controller
         $post->title = $request->input('title');
         $post->description = $request->input('description');
         $user->posts()->save($post);
-
+        session()->flash('success', 'El post se creó exitosamente.');
         return redirect()->route('solicitudes.showCreateForm'); // Redirigir a la página de creación
     }
 
@@ -147,31 +148,41 @@ class SolicitudController extends Controller
         return view('solicitudes.editar', ['user' => $user]);
     }
 
-    public function update(Request $request, $id)
+   
+
+  
+
+public function importarPublicaciones()
 {
-    $user = User::find($id);
-    $user->nombres = $request->input('nombres');
-        $user->apellidos = $request->input('apellidos');
-        $user->password = bcrypt($request->input('password'));
-        $user->telefonos = $request->input('telefonos');
-        $user->fecha_nacimiento = $request->input('fecha_nacimiento');
-        $user->email = $request->input('email');
-    $user->save();
+    // Crear una instancia del cliente Guzzle HTTP
+    $client = new Client();
 
-    return redirect()->route('solicitudes.registro')->with('success', 'Registro actualizado exitosamente.');
-}
+    try {
+        // Realizar una solicitud GET a la URL externa
+        $response = $client->get('http://buzz.blogger.com/');
 
+        // Obtener el contenido de la respuesta
+        $contenido = $response->getBody()->getContents();
 
-public function eliminarRegistro($id)
-{
-    $user = User::find($id);
-    if ($user) {
-        $user->delete();
-        return redirect()->route('solicitudes.registro')->with('success', 'Registro eliminado exitosamente.');
+        // Procesar $contenido según el formato de la respuesta (por ejemplo, JSON)
+        // Aquí, asumimos que la respuesta es en formato JSON, ajústalo según la respuesta real
+        $publicacionesExternas = json_decode($contenido, true);
+
+        // Iterar sobre las publicaciones externas y agregarlas a la base de datos
+        foreach ($publicacionesExternas as $publicacionExterna) {
+            $post = new Post();
+            $post->title = $publicacionExterna['title'];
+            $post->description = $publicacionExterna['description'];
+            Auth::user()->posts()->save($post);
+        }
+
+        // Redirigir de nuevo a la lista de publicaciones del usuario
+        return redirect()->route('solicitudes.registro')->with('success', 'Publicaciones importadas exitosamente.');
+    } catch (\Exception $e) {
+        // Manejar cualquier error que pueda ocurrir al realizar la solicitud a la URL externa
+        return redirect()->route('solicitudes.registro')->with('error', 'Hubo un error al importar las publicaciones.');
     }
-    return redirect()->route('solicitudes.registro')->with('error', 'No se pudo encontrar el registro para eliminar.');
 }
-
 
 
 

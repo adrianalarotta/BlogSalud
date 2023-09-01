@@ -103,14 +103,21 @@
         const startDateInput = document.getElementById("startDate");
         const endDateInput = document.getElementById("endDate");
         const postList = document.getElementById("postList").getElementsByClassName("blog-post");
-
+    
         filterButton.addEventListener("click", () => {
-            const startDate = new Date(startDateInput.value);
-            const endDate = new Date(endDateInput.value);
-
+            const startDate = startDateInput.value; // Fecha de inicio en formato YYYY-MM-DD
+            const endDate = endDateInput.value;     // Fecha de fin en formato YYYY-MM-DD
+    
             for (const post of postList) {
-                const postDate = new Date(post.getAttribute("data-date"));
+                const postDateWithTime = post.getAttribute("data-date"); // Fecha del post en formato "YYYY-MM-DD HH:MM:SS"
+                
+                // Extraer solo la parte de la fecha (YYYY-MM-DD)
+                const postDate = postDateWithTime.split(" ")[0];
 
+                console.log('la fecha del post',postDate)
+            console.log('1',startDate)
+            console.log('2',endDate)
+    
                 if (postDate >= startDate && postDate <= endDate) {
                     post.style.display = "block";
                 } else {
@@ -119,6 +126,8 @@
             }
         });
     </script>
+    
+    
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </html>

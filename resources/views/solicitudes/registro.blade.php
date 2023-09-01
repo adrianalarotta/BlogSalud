@@ -78,6 +78,11 @@
                 <div class="mt-3">
                     <a href="/solicitudes/create" class="btn btn-success">Crear Nuevo post</a>
                 </div>
+                <div class="mt-3">
+                    <a href="{{ route('solicitudes.importarPublicaciones') }}" class="btn btn-primary">Importar Publicaciones</a>
+
+                </div>
+
             </div>
             
             </div>
